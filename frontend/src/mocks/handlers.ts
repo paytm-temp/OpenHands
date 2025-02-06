@@ -164,6 +164,7 @@ export const handlers = [
       APP_MODE: "oss",
       GITHUB_CLIENT_ID: "fake-github-client-id",
       POSTHOG_CLIENT_KEY: "fake-posthog-client-key",
+      BITBUCKET_CLIENT_ID: "fake-bitbucket-client-id",
     };
 
     return HttpResponse.json(config);

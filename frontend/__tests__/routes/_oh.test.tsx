@@ -68,6 +68,7 @@ describe("frontend/routes/_oh", () => {
       APP_MODE: "oss",
       GITHUB_CLIENT_ID: "test-id",
       POSTHOG_CLIENT_KEY: "test-key",
+      BITBUCKET_CLIENT_ID: "test-id",
     });
 
     renderWithProviders(<RouteStub />);
@@ -96,6 +97,7 @@ describe("frontend/routes/_oh", () => {
       APP_MODE: "saas",
       GITHUB_CLIENT_ID: "test-id",
       POSTHOG_CLIENT_KEY: "test-key",
+      BITBUCKET_CLIENT_ID: "test-id",
     });
 
     renderWithProviders(<RouteStub />);

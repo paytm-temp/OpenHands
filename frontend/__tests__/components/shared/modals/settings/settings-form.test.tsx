@@ -21,6 +21,7 @@ describe("SettingsForm", () => {
     APP_MODE: "saas",
     GITHUB_CLIENT_ID: "123",
     POSTHOG_CLIENT_KEY: "123",
+    BITBUCKET_CLIENT_ID: "123",
   });
 
   const RouterStub = createRoutesStub([

@@ -1,5 +1,5 @@
 import posthog from "posthog-js";
-import React from "react";
+import React, { createContext, useContext, useState } from "react";
 import OpenHands from "#/api/open-hands";
 import {
   removeGitHubTokenHeader as removeOpenHandsGitHubTokenHeader,
@@ -18,18 +18,32 @@ interface AuthContextType {
   clearGitHubToken: () => void;
   refreshToken: () => Promise<boolean>;
   logout: () => void;
+  bitbucketPassword: string | null;
+  setBitbucketPassword: (password: string | null) => void;
+  clearBitbucketPassword: () => void;
+  bitbucketUsername: string | null;
+  setBitbucketUsername: (username: string | null) => void;
+  clearBitbucketUsername: () => void;
 }
 
-const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function AuthProvider({ children }: React.PropsWithChildren) {
-  const [gitHubTokenState, setGitHubTokenState] = React.useState<string | null>(
-    () => localStorage.getItem("ghToken"),
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [gitHubTokenState, setGitHubTokenState] = useState<string | null>(() =>
+    localStorage.getItem("ghToken"),
   );
 
-  const [userIdState, setUserIdState] = React.useState<string>(
+  const [userIdState, setUserIdState] = useState<string>(
     () => localStorage.getItem("userId") || "",
   );
+
+  const [bitbucketPasswordState, setBitbucketPasswordState] = useState<
+    string | null
+  >(() => localStorage.getItem("bbPassword"));
+
+  const [bitbucketUsernameState, setBitbucketUsernameState] = useState<
+    string | null
+  >(() => localStorage.getItem("bbUsername"));
 
   const clearGitHubToken = () => {
     setGitHubTokenState(null);
@@ -54,7 +68,7 @@ function AuthProvider({ children }: React.PropsWithChildren) {
   };
 
   const setUserId = (userId: string) => {
-    setUserIdState(userIdState);
+    setUserIdState(userId);
     localStorage.setItem("userId", userId);
   };
 
@@ -98,19 +112,23 @@ function AuthProvider({ children }: React.PropsWithChildren) {
       clearGitHubToken,
       refreshToken,
       logout,
+      bitbucketPassword: bitbucketPasswordState,
+      setBitbucketPassword: setBitbucketPasswordState,
+      clearBitbucketPassword: () => setBitbucketPasswordState(null),
+      bitbucketUsername: bitbucketUsernameState,
+      setBitbucketUsername: setBitbucketUsernameState,
+      clearBitbucketUsername: () => setBitbucketUsernameState(null),
     }),
-    [gitHubTokenState],
+    [gitHubTokenState, bitbucketPasswordState, bitbucketUsernameState],
   );
 
-  return <AuthContext value={value}>{children}</AuthContext>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-function useAuth() {
-  const context = React.useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within a AuthProvider");
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
-
-export { AuthProvider, useAuth };
+};

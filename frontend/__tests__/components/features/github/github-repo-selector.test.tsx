@@ -31,6 +31,7 @@ describe("GitHubRepositorySelector", () => {
       APP_SLUG: "openhands",
       GITHUB_CLIENT_ID: "test-client-id",
       POSTHOG_CLIENT_KEY: "test-posthog-key",
+      BITBUCKET_CLIENT_ID: "test-client-id",
     });
 
     renderWithProviders(

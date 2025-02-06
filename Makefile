@@ -228,7 +228,7 @@ docker-run:
 		export WORKSPACE_BASE=${WORKSPACE_BASE}; \
 		export SANDBOX_USER_ID=$(shell id -u); \
 		export DATE=$(shell date +%Y%m%d%H%M%S); \
-		docker compose up $(OPTIONS); \
+		docker-compose up $(OPTIONS); \
 	fi
 
 # Run the app (WSL mode)

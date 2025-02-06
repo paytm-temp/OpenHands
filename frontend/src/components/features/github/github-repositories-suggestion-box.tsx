@@ -16,12 +16,14 @@ interface GitHubRepositoriesSuggestionBoxProps {
   handleSubmit: () => void;
   gitHubAuthUrl: string | null;
   user: GitHubErrorReponse | GitHubUser | null;
+  className?: string;
 }
 
 export function GitHubRepositoriesSuggestionBox({
   handleSubmit,
   gitHubAuthUrl,
   user,
+  className,
 }: GitHubRepositoriesSuggestionBoxProps) {
   const [connectToGitHubModalOpen, setConnectToGitHubModalOpen] =
     React.useState(false);
@@ -51,7 +53,7 @@ export function GitHubRepositoriesSuggestionBox({
   const isLoggedIn = !!user && !isGitHubErrorReponse(user);
 
   return (
-    <>
+    <div className={className}>
       <SuggestionBox
         title="Open a Repo"
         content={
@@ -79,6 +81,6 @@ export function GitHubRepositoriesSuggestionBox({
           />
         </ModalBackdrop>
       )}
-    </>
+    </div>
   );
 }

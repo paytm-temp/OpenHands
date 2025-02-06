@@ -9,21 +9,31 @@ import { useConfig } from "#/hooks/query/use-config";
 import { useAuth } from "#/context/auth-context";
 import { ImportProjectSuggestionBox } from "../../components/features/suggestions/import-project-suggestion-box";
 import { GitHubRepositoriesSuggestionBox } from "#/components/features/github/github-repositories-suggestion-box";
+import { BitbucketRepositoriesSuggestionBox } from "#/components/features/bitbucket/bitbucket-repositories-suggestion-box";
 import { HeroHeading } from "#/components/shared/hero-heading";
 import { TaskForm } from "#/components/shared/task-form";
+import { useBitbucketAuthUrl } from "#/hooks/use-bitbucket-auth-url";
+import { useBitbucketUser } from "#/hooks/query/use-bitbucket-user";
 
 function Home() {
-  const { gitHubToken } = useAuth();
+  const { gitHubToken, bitbucketPassword, bitbucketUsername } = useAuth();
   const dispatch = useDispatch();
   const formRef = React.useRef<HTMLFormElement>(null);
 
   const { data: config } = useConfig();
   const { data: user } = useGitHubUser();
-
+  const { data: bitbucketUser } = useBitbucketUser();
   const gitHubAuthUrl = useGitHubAuthUrl({
     gitHubToken,
     appMode: config?.APP_MODE || null,
     gitHubClientId: config?.GITHUB_CLIENT_ID || null,
+  });
+
+  const bitbucketAuthUrl = useBitbucketAuthUrl({
+    bitbucketPassword,
+    bitbucketUsername,
+    appMode: config?.APP_MODE || null,
+    bitbucketClientId: config?.BITBUCKET_CLIENT_ID || null,
   });
 
   const latestConversation = localStorage.getItem("latest_conversation_id");
@@ -36,13 +46,21 @@ function Home() {
           <TaskForm ref={formRef} />
         </div>
 
-        <div className="flex gap-4 w-full flex-col md:flex-row">
+        <div className="flex gap-4 w-full flex-col md:flex-row justify-center items-center">
+          <BitbucketRepositoriesSuggestionBox
+            className="flex-1 min-w-[250px]"
+            handleSubmit={() => formRef.current?.requestSubmit()}
+            bitbucketAuthUrl={bitbucketAuthUrl}
+            user={bitbucketUser || null}
+          />
           <GitHubRepositoriesSuggestionBox
+            className="flex-1 min-w-[250px]"
             handleSubmit={() => formRef.current?.requestSubmit()}
             gitHubAuthUrl={gitHubAuthUrl}
             user={user || null}
           />
           <ImportProjectSuggestionBox
+            className="flex-1 min-w-[250px]"
             onChange={async (event) => {
               if (event.target.files) {
                 const zip = event.target.files[0];
