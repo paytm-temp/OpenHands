@@ -14,7 +14,7 @@ export const useUserRepositories = () => {
   const repos = useInfiniteQuery({
     queryKey: ["bitbucketRepositories", username, password],
     queryFn: async ({ pageParam = 1 }) =>
-      retrieveBitbucketUserRepositories(pageParam, 100, username, password),
+      retrieveBitbucketUserRepositories(username, password, pageParam, 100),
     getNextPageParam: (lastPage) => lastPage.nextPage,
     enabled:
       !!bitbucketPassword && !!bitbucketUsername && config?.APP_MODE === "oss",

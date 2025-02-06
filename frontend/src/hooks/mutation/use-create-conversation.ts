@@ -10,12 +10,11 @@ import { useAuth } from "#/context/auth-context";
 export const useCreateConversation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { gitHubToken } = useAuth();
+  const { gitHubToken, bitbucketPassword, bitbucketUsername } = useAuth();
   const queryClient = useQueryClient();
 
-  const { selectedRepository, files, importedProjectZip } = useSelector(
-    (state: RootState) => state.initialQuery,
-  );
+  const { selectedRepository, files, importedProjectZip, provider } =
+    useSelector((state: RootState) => state.initialQuery);
 
   return useMutation({
     mutationFn: (variables: { q?: string }) => {
@@ -23,7 +22,8 @@ export const useCreateConversation = () => {
         !variables.q?.trim() &&
         !selectedRepository &&
         files.length === 0 &&
-        !importedProjectZip
+        !importedProjectZip &&
+        !provider
       ) {
         throw new Error("No query provided");
       }
@@ -32,6 +32,9 @@ export const useCreateConversation = () => {
       return OpenHands.createConversation(
         gitHubToken || undefined,
         selectedRepository || undefined,
+        bitbucketPassword || undefined,
+        bitbucketUsername || undefined,
+        provider || undefined,
       );
     },
     onSuccess: async ({ conversation_id: conversationId }, { q }) => {

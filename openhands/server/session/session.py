@@ -96,9 +96,15 @@ class Session:
 
         github_token = None
         selected_repository = None
+        bitbucket_password = None
+        bitbucket_username = None
+        provider = None
         if isinstance(settings, ConversationInitData):
             github_token = settings.github_token
             selected_repository = settings.selected_repository
+            bitbucket_password = settings.bitbucket_password
+            bitbucket_username = settings.bitbucket_username
+            provider = settings.provider
 
         try:
             await self.agent_session.start(
@@ -111,6 +117,9 @@ class Session:
                 agent_configs=self.config.get_agent_configs(),
                 github_token=github_token,
                 selected_repository=selected_repository,
+                bitbucket_password=bitbucket_password,
+                bitbucket_username=bitbucket_username,
+                provider=provider,
             )
         except Exception as e:
             logger.exception(f'Error creating controller: {e}')

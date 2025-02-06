@@ -6,7 +6,10 @@ import {
 } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import posthog from "posthog-js";
-import { setSelectedRepository } from "#/state/initial-query-slice";
+import {
+  setSelectedRepository,
+  setProvider,
+} from "#/state/initial-query-slice";
 import { useConfig } from "#/hooks/query/use-config";
 import { sanitizeQuery } from "#/utils/sanitize-query";
 import { BitbucketRepository } from "#/types/bitbucket";
@@ -40,6 +43,7 @@ export function BitbucketRepositorySelector({
     const repo = allRepositories.find((r) => r.name.toString() === name);
     if (repo) {
       dispatch(setSelectedRepository(repo.full_name));
+      dispatch(setProvider("bitbucket"));
       posthog.capture("repository_selected");
       onSelect();
       setSelectedKey(name);

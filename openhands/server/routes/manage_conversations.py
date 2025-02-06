@@ -31,6 +31,9 @@ UPDATED_AT_CALLBACK_ID = 'updated_at_callback_id'
 class InitSessionRequest(BaseModel):
     github_token: str | None = None
     selected_repository: str | None = None
+    bitbucket_password: str | None = None
+    bitbucket_username: str | None = None
+    provider: str | None = None
 
 
 @app.post('/conversations')
@@ -51,7 +54,13 @@ async def new_conversation(request: Request, data: InitSessionRequest):
         session_init_args = {**settings.__dict__, **session_init_args}
 
     github_token = getattr(request.state, 'github_token', '')
+    bitbucket_password = getattr(request.state, 'bitbucket_password', '')
+    bitbucket_username = getattr(request.state, 'bitbucket_username', '')
+    provider = getattr(request.state, 'provider', '')
     session_init_args['github_token'] = github_token or data.github_token or ''
+    session_init_args['bitbucket_password'] = bitbucket_password or data.bitbucket_password or ''
+    session_init_args['bitbucket_username'] = bitbucket_username or data.bitbucket_username or ''
+    session_init_args['provider'] = provider or data.provider or ''
     session_init_args['selected_repository'] = data.selected_repository
     conversation_init_data = ConversationInitData(**session_init_args)
     logger.info('Loading conversation store')
@@ -77,6 +86,9 @@ async def new_conversation(request: Request, data: InitSessionRequest):
             conversation_id=conversation_id,
             title=conversation_title,
             github_user_id=get_user_id(request),
+            bitbucket_password=bitbucket_password,
+            bitbucket_username=bitbucket_username,
+            provider=provider,
             selected_repository=data.selected_repository,
         )
     )

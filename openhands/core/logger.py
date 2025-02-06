@@ -183,6 +183,7 @@ class SensitiveDataFilter(logging.Filter):
             'jwt_secret',
             'modal_api_token_id',
             'modal_api_token_secret',
+            'bitbucket_password',
         ]
 
         # add env var names
@@ -194,6 +195,7 @@ class SensitiveDataFilter(logging.Filter):
         sensitive_patterns.append('LLM_API_KEY')
         sensitive_patterns.append('GITHUB_TOKEN')
         sensitive_patterns.append('SANDBOX_ENV_GITHUB_TOKEN')
+        sensitive_patterns.append('BITBUCKET_PASSWORD')
 
         # this also formats the message with % args
         msg = record.getMessage()

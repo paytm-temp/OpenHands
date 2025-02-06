@@ -210,12 +210,15 @@ class Runtime(FileEditRuntimeMixin):
         source = event.source if event.source else EventSource.AGENT
         self.event_stream.add_event(observation, source)  # type: ignore[arg-type]
 
-    def clone_repo(self, github_token: str, selected_repository: str):
+    def clone_repo(self, github_token: str, selected_repository: str, provider: str, bitbucket_password: str, bitbucket_username: str):
         if not github_token or not selected_repository:
             raise ValueError(
                 'github_token and selected_repository must be provided to clone a repository'
             )
-        url = f'https://{github_token}@github.com/{selected_repository}.git'
+        if provider == 'github':
+            url = f'https://{github_token}@github.com/{selected_repository}.git'
+        elif provider == 'bitbucket':
+            url = f'https://{bitbucket_username}:{bitbucket_password}@bitbucket.org/{selected_repository}.git'
         dir_name = selected_repository.split('/')[1]
         # add random branch name to avoid conflicts
         random_str = ''.join(
@@ -226,6 +229,7 @@ class Runtime(FileEditRuntimeMixin):
             command=f'git clone {url} {dir_name} ; cd {dir_name} ; git checkout -b {branch_name}',
         )
         self.log('info', f'Cloning repo: {selected_repository}')
+        raise NotImplementedError('Cloning repositories is not implemented in the base class.', action)
         self.run_action(action)
 
     def get_microagents_from_selected_repo(

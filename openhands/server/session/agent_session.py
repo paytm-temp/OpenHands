@@ -69,6 +69,9 @@ class AgentSession:
         agent_configs: dict[str, AgentConfig] | None = None,
         github_token: str | None = None,
         selected_repository: str | None = None,
+        bitbucket_password: str | None = None,
+        bitbucket_username: str | None = None,
+        provider: str | None = None,
     ):
         """Starts the Agent session
         Parameters:
@@ -95,7 +98,10 @@ class AgentSession:
             config=config,
             agent=agent,
             github_token=github_token,
+            bitbucket_password=bitbucket_password,
+            bitbucket_username=bitbucket_username,
             selected_repository=selected_repository,
+            provider=provider,
         )
 
         self.controller = self._create_controller(
@@ -165,7 +171,10 @@ class AgentSession:
         config: AppConfig,
         agent: Agent,
         github_token: str | None = None,
+        bitbucket_password: str | None = None,
+        bitbucket_username: str | None = None,
         selected_repository: str | None = None,
+        provider: str | None = None,
     ):
         """Creates a runtime instance
 
@@ -183,8 +192,11 @@ class AgentSession:
         env_vars = (
             {
                 'GITHUB_TOKEN': github_token,
+                'BITBUCKET_PASSWORD': bitbucket_password,
+                'BITBUCKET_USERNAME': bitbucket_username,
+                'PROVIDER': provider,
             }
-            if github_token
+            if github_token or bitbucket_password or bitbucket_username or provider
             else None
         )
         self.runtime = runtime_cls(
@@ -214,7 +226,12 @@ class AgentSession:
 
         if selected_repository:
             await call_sync_from_async(
-                self.runtime.clone_repo, github_token, selected_repository
+                self.runtime.clone_repo,
+                github_token,
+                selected_repository,
+                provider,
+                bitbucket_password,
+                bitbucket_username,
             )
 
         if agent.prompt_manager:

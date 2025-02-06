@@ -6,7 +6,10 @@ import {
 } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import posthog from "posthog-js";
-import { setSelectedRepository } from "#/state/initial-query-slice";
+import {
+  setSelectedRepository,
+  setProvider,
+} from "#/state/initial-query-slice";
 import { useConfig } from "#/hooks/query/use-config";
 import { sanitizeQuery } from "#/utils/sanitize-query";
 
@@ -39,6 +42,7 @@ export function GitHubRepositorySelector({
     const repo = allRepositories.find((r) => r.id.toString() === id);
     if (repo) {
       dispatch(setSelectedRepository(repo.full_name));
+      dispatch(setProvider("github"));
       posthog.capture("repository_selected");
       onSelect();
       setSelectedKey(id);

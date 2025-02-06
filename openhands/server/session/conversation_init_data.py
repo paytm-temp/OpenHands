@@ -11,3 +11,6 @@ class ConversationInitData(Settings):
 
     github_token: str | None = None
     selected_repository: str | None = None
+    bitbucket_password: str | None = None
+    bitbucket_username: str | None = None
+    provider: str | None = None

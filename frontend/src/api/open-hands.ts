@@ -243,10 +243,16 @@ class OpenHands {
   static async createConversation(
     githubToken?: string,
     selectedRepository?: string,
+    bitbucketPassword?: string,
+    bitbucketUsername?: string,
+    provider?: string,
   ): Promise<Conversation> {
     const body = {
       github_token: githubToken,
       selected_repository: selectedRepository,
+      bitbucket_password: bitbucketPassword,
+      bitbucket_username: bitbucketUsername,
+      provider,
     };
 
     const { data } = await openHands.post<Conversation>(
