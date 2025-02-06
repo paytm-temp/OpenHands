@@ -3,6 +3,7 @@ import json
 import time
 from dataclasses import dataclass, field
 from uuid import uuid4
+import logging
 
 import socketio
 
@@ -184,14 +185,14 @@ class SessionManager:
             if sid in self._active_conversations:
                 conversation, count = self._active_conversations[sid]
                 self._active_conversations[sid] = (conversation, count + 1)
-                logger.info(f'Reusing active conversation {sid}')
+                logger.info(f'Reusing active conversation for session ID: {sid}')
                 return conversation
 
             # Check if we have a detached conversation we can reuse
             if sid in self._detached_conversations:
                 conversation, _ = self._detached_conversations.pop(sid)
                 self._active_conversations[sid] = (conversation, 1)
-                logger.info(f'Reusing detached conversation {sid}')
+                logger.info(f'Reusing detached conversation for session ID: {sid}')
                 return conversation
 
             # Create new conversation if none exists
@@ -347,10 +348,12 @@ class SessionManager:
             self._has_remote_connections_flags.pop(sid, None)
 
     async def maybe_start_agent_loop(self, sid: str, settings: Settings) -> EventStream:
-        logger.info(f'maybe_start_agent_loop:{sid}')
+        logger.info(f'maybe_start_agent_loop: Checking if agent loop needs to be started for session ID: {sid}')
         session: Session | None = None
         if not await self.is_agent_loop_running(sid):
-            logger.info(f'start_agent_loop:{sid}')
+            logger.info(f'start_agent_loop: Starting agent loop for session ID: {sid}')
+            logger.info(f'Settings: {settings}')
+            logger.info(f'Config: {self.config}')
             session = Session(
                 sid=sid, file_store=self.file_store, config=self.config, sio=self.sio
             )
@@ -365,17 +368,23 @@ class SessionManager:
         return event_stream
 
     async def _get_event_stream(self, sid: str) -> EventStream | None:
-        logger.info(f'_get_event_stream:{sid}')
-        session = self._local_agent_loops_by_sid.get(sid)
-        if session:
-            logger.info(f'found_local_agent_loop:{sid}')
-            return session.agent_session.event_stream
+        # Add logging to trace the flow
+        logger.info(f"Attempting to start event stream for session ID: {sid}")
+        
+        try:
+            session = self._local_agent_loops_by_sid.get(sid)
+            if session:
+                logger.info(f'found_local_agent_loop:{sid}')
+                return session.agent_session.event_stream
 
-        if await self.is_agent_loop_running_in_cluster(sid):
-            logger.info(f'found_remote_agent_loop:{sid}')
-            return EventStream(sid, self.file_store)
+            if await self.is_agent_loop_running_in_cluster(sid):
+                logger.info(f'found_remote_agent_loop:{sid}')
+                return EventStream(sid, self.file_store)
 
-        return None
+            return None
+        except Exception as e:
+            logger.error(f"Error while starting event stream for session {sid}: {e}")
+            # Handle exception...
 
     async def send_to_event_stream(self, connection_id: str, data: dict):
         # If there is a local session running, send to that

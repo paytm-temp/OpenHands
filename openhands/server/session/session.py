@@ -24,6 +24,8 @@ from openhands.server.session.agent_session import AgentSession
 from openhands.server.session.conversation_init_data import ConversationInitData
 from openhands.server.settings import Settings
 from openhands.storage.files import FileStore
+from pydantic import SecretStr
+
 
 ROOM_KEY = 'room:{sid}'
 
@@ -85,7 +87,7 @@ class Session:
 
         default_llm_config = self.config.get_llm_config()
         default_llm_config.model = settings.llm_model or ''
-        default_llm_config.api_key = settings.llm_api_key
+        default_llm_config.api_key = SecretStr(settings.llm_api_key) if settings.llm_api_key else None
         default_llm_config.base_url = settings.llm_base_url
 
         # TODO: override other LLM config & agent config groups (#2075)
