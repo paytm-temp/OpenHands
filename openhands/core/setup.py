@@ -43,9 +43,6 @@ def create_runtime(
     # agent class
     agent_cls = openhands.agenthub.Agent.get_cls(config.default_agent)
 
-    logger.debug(f'Initializing agent: {agent_cls.__name__}')
-    logger.debug(f'Config: {config}')
-
     # runtime and tools
     runtime_cls = get_runtime_cls(config.runtime)
     logger.debug(f'Initializing runtime: {runtime_cls.__name__}')

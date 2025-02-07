@@ -106,12 +106,9 @@ def load_from_toml(cfg: AppConfig, toml_file: str = 'config.toml'):
     try:
         with open(toml_file, 'r', encoding='utf-8') as toml_contents:
             toml_config = toml.load(toml_contents)
-            logger.openhands_logger.info(f'TOML config: {toml_config}')
     except FileNotFoundError:
-        logger.openhands_logger.info(f'TOML path not found: {toml_file}')
         return
     except toml.TomlDecodeError as e:
-        logger.openhands_logger.error(f'Cannot parse config from toml, toml values have not been applied.\nError: {e}')
         logger.openhands_logger.warning(
             f'Cannot parse config from toml, toml values have not been applied.\nError: {e}',
             exc_info=False,
@@ -308,14 +305,11 @@ def get_llm_config_arg(
     if llm_config_arg.startswith('llm.'):
         llm_config_arg = llm_config_arg[4:]
 
-    logger.openhands_logger.debug(f'Loading llm config from {llm_config_arg}')
-
     # load the toml file
     try:
         with open(toml_file, 'r', encoding='utf-8') as toml_contents:
             toml_config = toml.load(toml_contents)
     except FileNotFoundError as e:
-        logger.openhands_logger.error(f'Config file not found: {e}')
         return None
     except toml.TomlDecodeError as e:
         logger.openhands_logger.error(
@@ -326,7 +320,6 @@ def get_llm_config_arg(
     # update the llm config with the specified section
     if 'llm' in toml_config and llm_config_arg in toml_config['llm']:
         return LLMConfig(**toml_config['llm'][llm_config_arg])
-    logger.openhands_logger.debug(f'Loading from toml failed for {llm_config_arg}')
     return None
 
 

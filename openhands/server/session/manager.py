@@ -3,7 +3,6 @@ import json
 import time
 from dataclasses import dataclass, field
 from uuid import uuid4
-import logging
 
 import socketio
 
@@ -348,12 +347,8 @@ class SessionManager:
             self._has_remote_connections_flags.pop(sid, None)
 
     async def maybe_start_agent_loop(self, sid: str, settings: Settings) -> EventStream:
-        logger.info(f'maybe_start_agent_loop: Checking if agent loop needs to be started for session ID: {sid}')
         session: Session | None = None
         if not await self.is_agent_loop_running(sid):
-            logger.info(f'start_agent_loop: Starting agent loop for session ID: {sid}')
-            logger.info(f'Settings: {settings}')
-            logger.info(f'Config: {self.config}')
             session = Session(
                 sid=sid, file_store=self.file_store, config=self.config, sio=self.sio
             )
@@ -362,23 +357,17 @@ class SessionManager:
 
         event_stream = await self._get_event_stream(sid)
         if not event_stream:
-            logger.error(f'No event stream after starting agent loop: {sid}')
             raise RuntimeError(f'no_event_stream:{sid}')
         asyncio.create_task(self._cleanup_session_later(sid))
         return event_stream
 
     async def _get_event_stream(self, sid: str) -> EventStream | None:
-        # Add logging to trace the flow
-        logger.info(f"Attempting to start event stream for session ID: {sid}")
-        
         try:
             session = self._local_agent_loops_by_sid.get(sid)
             if session:
-                logger.info(f'found_local_agent_loop:{sid}')
                 return session.agent_session.event_stream
 
             if await self.is_agent_loop_running_in_cluster(sid):
-                logger.info(f'found_remote_agent_loop:{sid}')
                 return EventStream(sid, self.file_store)
 
             return None
