@@ -38,7 +38,7 @@ export const retrieveBitbucketAppRepositories = async (
     "/api/bitbucket/repositories",
     {
       params: {
-        sort: "pushed",
+        sort: "updated_on",
         page,
         per_page,
         installation_id: installationId,
