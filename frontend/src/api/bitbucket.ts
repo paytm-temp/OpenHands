@@ -108,6 +108,7 @@ export const retrieveBitbucketUserRepositories = async (
       params: {
         page,
         pagelen: per_page,
+        sort: "updated_on",
       },
     },
   );
