@@ -9,6 +9,7 @@ import { useAuth } from "#/context/auth-context";
 import { ModalButton } from "../buttons/modal-button";
 import { CustomInput } from "../custom-input";
 import { setAuthTokenHeader } from "#/api/bitbucket-axios-instance";
+import { setBitbucketCredentialsHeader } from "#/api/open-hands-axios";
 
 interface ConnectToBitbucketModalProps {
   onClose: () => void;
@@ -19,9 +20,9 @@ export function ConnectToBitbucketModal({
 }: ConnectToBitbucketModalProps) {
   const {
     bitbucketPassword,
-    setBitbucketPassword,
+    setBitBucketPassword,
     bitbucketUsername,
-    setBitbucketUsername,
+    setBitBucketUsername,
   } = useAuth();
   const { t } = useTranslation();
 
@@ -31,9 +32,10 @@ export function ConnectToBitbucketModal({
     const bbPassword = formData.get("bbPassword")?.toString();
     const bbUsername = formData.get("bbUsername")?.toString();
     if (bbPassword && bbUsername) {
-      setBitbucketPassword(bbPassword);
-      setBitbucketUsername(bbUsername);
+      setBitBucketPassword(bbPassword);
+      setBitBucketUsername(bbUsername);
       setAuthTokenHeader(bbUsername, bbPassword);
+      setBitbucketCredentialsHeader(bbUsername, bbPassword);
     }
     onClose();
   };
@@ -45,14 +47,14 @@ export function ConnectToBitbucketModal({
         <BaseModalDescription
           description={
             <span>
-              {t(I18nKey.CONNECT_TO_GITHUB_MODAL$GET_YOUR_TOKEN)}{" "}
+              {t(I18nKey.CONNECT_TO_BITBUCKET_MODAL$GET_YOUR_PASSWORD)}{" "}
               <a
                 href="https://bitbucket.org/account/settings/app-passwords/new"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-[#791B80] underline"
               >
-                {t(I18nKey.CONNECT_TO_GITHUB_MODAL$HERE)}
+                {t(I18nKey.CONNECT_TO_BITBUCKET_MODAL$HERE)}
               </a>
             </span>
           }

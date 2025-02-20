@@ -28,7 +28,15 @@ export function AccountSettingsForm({
   gitHubError,
   analyticsConsent,
 }: AccountSettingsFormProps) {
-  const { gitHubToken, setGitHubToken, logout } = useAuth();
+  const {
+    bitbucketPassword,
+    setBitBucketPassword,
+    bitbucketUsername,
+    setBitBucketUsername,
+    gitHubToken,
+    setGitHubToken,
+    logout,
+  } = useAuth();
   const { data: config } = useConfig();
   const { saveUserSettings } = useCurrentSettings();
   const { t } = useTranslation();
@@ -38,10 +46,14 @@ export function AccountSettingsForm({
     const formData = new FormData(event.currentTarget);
 
     const ghToken = formData.get("ghToken")?.toString();
+    const bbUsername = formData.get("bbUsername")?.toString();
+    const bbPassword = formData.get("bbPassword")?.toString();
     const language = formData.get("language")?.toString();
     const analytics = formData.get("analytics")?.toString() === "on";
 
     if (ghToken) setGitHubToken(ghToken);
+    if (bbUsername) setBitBucketUsername(bbUsername);
+    if (bbPassword) setBitBucketPassword(bbPassword);
 
     // The form returns the language label, so we need to find the corresponding
     // language key to save it in the settings
@@ -104,6 +116,28 @@ export function AccountSettingsForm({
                   className="text-[#791B80] underline"
                 >
                   {t(I18nKey.CONNECT_TO_GITHUB_MODAL$HERE)}
+                </a>
+              </BaseModalDescription>
+              <CustomInput
+                name="bbUsername"
+                label="Bitbucket Username"
+                defaultValue={bitbucketUsername ?? ""}
+              />
+              <CustomInput
+                name="bbPassword"
+                label="Bitbucket Password"
+                type="password"
+                defaultValue={bitbucketPassword ?? ""}
+              />
+              <BaseModalDescription>
+                {t(I18nKey.CONNECT_TO_BITBUCKET_MODAL$GET_YOUR_PASSWORD)}{" "}
+                <a
+                  href="https://bitbucket.org/account/settings/app-passwords/new"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-[#791B80] underline"
+                >
+                  {t(I18nKey.CONNECT_TO_BITBUCKET_MODAL$HERE)}
                 </a>
               </BaseModalDescription>
             </>

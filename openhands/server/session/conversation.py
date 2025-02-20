@@ -14,12 +14,14 @@ class Conversation:
     file_store: FileStore
     event_stream: EventStream
     runtime: Runtime
+    provider: str | None
 
     def __init__(
         self,
         sid: str,
         file_store: FileStore,
         config: AppConfig,
+        provider: str | None = None,
     ):
         self.sid = sid
         self.config = config
@@ -29,6 +31,8 @@ class Conversation:
             self.security_analyzer = options.SecurityAnalyzers.get(
                 config.security.security_analyzer, SecurityAnalyzer
             )(self.event_stream)
+
+        self.provider = provider
 
         runtime_cls = get_runtime_cls(self.config.runtime)
         self.runtime = runtime_cls(

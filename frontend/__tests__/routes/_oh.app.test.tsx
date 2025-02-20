@@ -64,6 +64,7 @@ describe("App", () => {
       title: "",
       selected_repository: "",
       status: "STOPPED",
+      provider: "github",
     });
     const { rerender } = renderWithProviders(
       <RouteStub initialEntries={["/conversation/9999"]} />,

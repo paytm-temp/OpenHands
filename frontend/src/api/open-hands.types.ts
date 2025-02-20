@@ -68,6 +68,7 @@ export interface Conversation {
   last_updated_at: string;
   created_at: string;
   status: ProjectStatus;
+  provider: string | null;
 }
 
 export interface ResultSet<T> {

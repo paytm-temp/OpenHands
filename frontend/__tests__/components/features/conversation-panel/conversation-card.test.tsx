@@ -24,6 +24,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
     const expectedDate = `${formatTimeDelta(new Date("2021-10-01T12:00:00Z"))} ago`;
@@ -44,6 +45,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -59,6 +61,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository="org/selectedRepository"
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -75,6 +78,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -100,6 +104,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -124,6 +129,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository="org/selectedRepository"
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -145,6 +151,7 @@ describe("ConversationCard", () => {
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
         onChangeTitle={onChangeTitle}
+        provider="github"
       />,
     );
 
@@ -177,6 +184,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -201,6 +209,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -220,6 +229,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -245,6 +255,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -268,6 +279,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -287,6 +299,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -306,6 +319,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -319,6 +333,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -331,6 +346,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -342,6 +358,7 @@ describe("ConversationCard", () => {
         title="Conversation 1"
         selectedRepository={null}
         lastUpdatedAt="2021-10-01T12:00:00Z"
+        provider="github"
       />,
     );
 
@@ -358,6 +375,7 @@ describe("ConversationCard", () => {
           title="Conversation 1"
           selectedRepository={null}
           lastUpdatedAt="2021-10-01T12:00:00Z"
+          provider="github"
         />,
       );
 
@@ -374,6 +392,7 @@ describe("ConversationCard", () => {
           selectedRepository={null}
           lastUpdatedAt="2021-10-01T12:00:00Z"
           status="RUNNING"
+          provider="github"
         />,
       );
 

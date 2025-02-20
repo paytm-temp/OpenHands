@@ -19,7 +19,8 @@ class OpenhandsConfigInterface(ABC):
     APP_MODE: ClassVar[AppMode]
     POSTHOG_CLIENT_KEY: ClassVar[str]
     GITHUB_CLIENT_ID: ClassVar[str]
-    BITBUCKET_CLIENT_ID: ClassVar[str]
+    BITBUCKET_USERNAME: ClassVar[str]
+    BITBUCKET_PASSWORD: ClassVar[str]
     ATTACH_SESSION_MIDDLEWARE_PATH: ClassVar[str]
 
     @abstractmethod

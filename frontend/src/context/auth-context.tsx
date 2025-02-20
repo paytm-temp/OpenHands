@@ -4,6 +4,8 @@ import OpenHands from "#/api/open-hands";
 import {
   removeGitHubTokenHeader as removeOpenHandsGitHubTokenHeader,
   setGitHubTokenHeader as setOpenHandsGitHubTokenHeader,
+  removeBitbucketCredentialsHeader as removeOpenHandsBitbucketCredentialsHeader,
+  setBitbucketCredentialsHeader as setOpenHandsBitbucketCredentialsHeader,
 } from "#/api/open-hands-axios";
 import {
   setAuthTokenHeader as setGitHubAuthTokenHeader,
@@ -19,10 +21,10 @@ interface AuthContextType {
   refreshToken: () => Promise<boolean>;
   logout: () => void;
   bitbucketPassword: string | null;
-  setBitbucketPassword: (password: string | null) => void;
+  setBitBucketPassword: (password: string | null) => void;
   clearBitbucketPassword: () => void;
   bitbucketUsername: string | null;
-  setBitbucketUsername: (username: string | null) => void;
+  setBitBucketUsername: (username: string | null) => void;
   clearBitbucketUsername: () => void;
 }
 
@@ -72,6 +74,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("userId", userId);
   };
 
+  const setBitBucketPassword = (password: string | null) => {
+    setBitbucketPasswordState(password);
+    if (password) {
+      localStorage.setItem("bbPassword", password);
+      setOpenHandsBitbucketCredentialsHeader(null, password);
+    } else {
+      localStorage.removeItem("bbPassword");
+      removeOpenHandsBitbucketCredentialsHeader();
+    }
+  };
+
+  const setBitBucketUsername = (username: string | null) => {
+    setBitbucketUsernameState(username);
+    if (username) {
+      localStorage.setItem("bbUsername", username);
+      setOpenHandsBitbucketCredentialsHeader(username, null);
+    } else {
+      localStorage.removeItem("bbUsername");
+      removeOpenHandsBitbucketCredentialsHeader();
+    }
+  };
+
   const logout = () => {
     clearGitHubToken();
     posthog.reset();
@@ -99,8 +123,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const userId = localStorage.getItem("userId") || "";
 
+    const storedBitbucketPassword = localStorage.getItem("bbPassword");
+
+    const storedBitbucketUsername = localStorage.getItem("bbUsername");
+
     setGitHubToken(storedGitHubToken);
     setUserId(userId);
+    setBitBucketPassword(storedBitbucketPassword);
+    setBitBucketUsername(storedBitbucketUsername);
     setupGithubAxiosInterceptors(refreshToken, logout);
   }, []);
 
@@ -113,10 +143,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refreshToken,
       logout,
       bitbucketPassword: bitbucketPasswordState,
-      setBitbucketPassword: setBitbucketPasswordState,
+      setBitBucketPassword,
       clearBitbucketPassword: () => setBitbucketPasswordState(null),
       bitbucketUsername: bitbucketUsernameState,
-      setBitbucketUsername: setBitbucketUsernameState,
+      setBitBucketUsername,
       clearBitbucketUsername: () => setBitbucketUsernameState(null),
     }),
     [gitHubTokenState, bitbucketPasswordState, bitbucketUsernameState],

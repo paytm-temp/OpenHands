@@ -20,6 +20,7 @@ interface ConversationCardProps {
   lastUpdatedAt: string; // ISO 8601
   status?: ProjectStatus;
   variant?: "compact" | "default";
+  provider: string | null;
 }
 
 export function ConversationCard({
@@ -30,6 +31,7 @@ export function ConversationCard({
   isActive,
   title,
   selectedRepository,
+  provider,
   lastUpdatedAt,
   status = "STOPPED",
   variant = "default",
@@ -145,6 +147,7 @@ export function ConversationCard({
         {selectedRepository && (
           <ConversationRepoLink
             selectedRepository={selectedRepository}
+            provider={provider}
             onClick={(e) => e.stopPropagation()}
           />
         )}

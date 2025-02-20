@@ -1904,7 +1904,15 @@
     "en": "Get your token",
     "es": "Obten tu token"
   },
+  "CONNECT_TO_BITBUCKET_MODAL$GET_YOUR_PASSWORD": {
+    "en": "Get your password",
+    "es": "Obten tu contraseña"
+  },
   "CONNECT_TO_GITHUB_MODAL$HERE": {
+    "en": "here",
+    "es": "aquí"
+  },
+  "CONNECT_TO_BITBUCKET_MODAL$HERE": {
     "en": "here",
     "es": "aquí"
   },

@@ -402,6 +402,7 @@ if __name__ == '__main__':
         with tempfile.TemporaryDirectory() as temp_dir:
             # dry_run is true so we only prepare a temp_dir containing the required source code and the Dockerfile. We
             # then obtain the MD5 hash of the folder and return <image_repo>:<temp_dir_md5_hash>
+
             runtime_image_hash_name = build_runtime_image(
                 args.base_image,
                 runtime_builder=DockerRuntimeBuilder(docker.from_env()),

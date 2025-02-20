@@ -12,6 +12,8 @@ class OpenhandsConfig(OpenhandsConfigInterface):
     app_mode = AppMode.OSS
     posthog_client_key = 'phc_3ESMmY9SgqEAGBB6sMGK5ayYHkeUuknH2vP6FmWH9RA'
     github_client_id = os.environ.get('GITHUB_APP_CLIENT_ID', '')
+    bitbucket_username = os.environ.get('BITBUCKET_USERNAME', '')
+    bitbucket_password = os.environ.get('BITBUCKET_PASSWORD', '')
     attach_conversation_middleware_path = (
         'openhands.server.middleware.AttachConversationMiddleware'
     )
@@ -38,6 +40,8 @@ class OpenhandsConfig(OpenhandsConfigInterface):
             'APP_MODE': self.app_mode,
             'GITHUB_CLIENT_ID': self.github_client_id,
             'POSTHOG_CLIENT_KEY': self.posthog_client_key,
+            'BITBUCKET_USERNAME': self.bitbucket_username,
+            'BITBUCKET_PASSWORD': self.bitbucket_password,
         }
 
         return config

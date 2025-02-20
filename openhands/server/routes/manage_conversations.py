@@ -56,11 +56,13 @@ async def new_conversation(request: Request, data: InitSessionRequest):
     github_token = getattr(request.state, 'github_token', '')
     bitbucket_password = getattr(request.state, 'bitbucket_password', '')
     bitbucket_username = getattr(request.state, 'bitbucket_username', '')
-    provider = getattr(request.state, 'provider', '')
+    logger.info(f'Request state: {request.state}')
+    provider = getattr(request.state, 'provider', '') or data.provider or ''
+    logger.info(f'Provider: {provider}')
     session_init_args['github_token'] = github_token or data.github_token or ''
     session_init_args['bitbucket_password'] = bitbucket_password or data.bitbucket_password or ''
     session_init_args['bitbucket_username'] = bitbucket_username or data.bitbucket_username or ''
-    session_init_args['provider'] = provider or data.provider or ''
+    session_init_args['provider'] = provider
     session_init_args['selected_repository'] = data.selected_repository
     conversation_init_data = ConversationInitData(**session_init_args)
     logger.info('Loading conversation store')
