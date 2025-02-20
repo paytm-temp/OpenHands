@@ -99,7 +99,13 @@ export const retrieveBitbucketUserRepositories = async (
   page = 1,
   per_page = 30,
 ) => {
-  const response = await bitbucket.get<{ values: BitbucketRepository[] }>(
+  const response = await bitbucket.get<{
+    values: BitbucketRepository[];
+    pagelen: number;
+    size: number;
+    page: number;
+    next: string;
+  }>(
     `repositories/paytmteam`,
     {
       headers: {
@@ -113,8 +119,7 @@ export const retrieveBitbucketUserRepositories = async (
     },
   );
 
-  const link = response.headers.link ?? "";
-  const nextPage = extractNextPageFromLink(link);
+  const nextPage = response.data.next ? page + 1 : null;
 
   return { data: response.data.values, nextPage };
 };
