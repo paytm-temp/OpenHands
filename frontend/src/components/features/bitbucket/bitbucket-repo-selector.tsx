@@ -105,6 +105,9 @@ export function BitbucketRepositorySelector({
               key={repo.name}
               value={repo.name}
               className="data-[selected=true]:bg-default-100"
+              classNames={{
+                title: "break-words whitespace-normal"
+              }}
               textValue={repo.full_name}
             >
               {repo.full_name}
@@ -120,6 +123,9 @@ export function BitbucketRepositorySelector({
               key={repo.name}
               value={repo.name}
               className="data-[selected=true]:bg-default-100"
+              classNames={{
+                title: "break-words whitespace-normal"
+              }}
               textValue={repo.full_name}
             >
               {repo.full_name}
